@@ -1,12 +1,12 @@
-import React from 'react';
-import { DatePicker } from 'antd';
+import React, { FC } from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import Auth from '@pages/auth';
 
-import TempDiv from './style';
-
-const App = () => (
-  <TempDiv>
-    Hello boilerplate!
-  </TempDiv>
+const App: FC = () => (
+  <Switch>
+    <Route exact path="/" component={Auth} />
+    <Redirect to="/" />
+  </Switch>
 );
 
 export default App;

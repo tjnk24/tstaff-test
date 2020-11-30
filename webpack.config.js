@@ -54,6 +54,7 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js'],
     alias: {
       '@components': path.resolve(__dirname, 'src', 'components'),
+      '@pages': path.resolve(__dirname, 'src', 'pages'),
     },
   },
   plugins: [
