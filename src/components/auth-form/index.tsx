@@ -1,10 +1,20 @@
-import React, { FC } from 'react';
-import { Button, Card } from 'antd';
-import Input from 'antd/lib/input';
-import Form from './style';
+import React, { FC, useState } from 'react';
+import { Button, Card, Typography, Input } from 'antd';
+import authenticateUser from './helpers';
 import { layout , tailLayout } from './layout-props';
+import Form from './style';
+import { AuthValuesType } from './types';
 
 const AuthForm: FC = () => {
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const loginHandler = (values: AuthValuesType) => {
+    setButtonDisabled(true);
+    authenticateUser(values, setErrorMessage);
+    setButtonDisabled(false);
+  };
+
   return (
     <Card>
       <Form
@@ -13,10 +23,12 @@ const AuthForm: FC = () => {
         initialValues={{
           remember: true,
         }}
+        onFocus={() => setErrorMessage(null)}
+        onFinish={loginHandler}
       >
         <Form.Item
           label="Логин"
-          name="username"
+          name="email"
           rules={[
             {
               required: true,
@@ -40,6 +52,10 @@ const AuthForm: FC = () => {
           <Input.Password />
         </Form.Item>
 
+        <Form.Item {...tailLayout} hidden={!errorMessage}>
+          <Typography.Text type="danger">{errorMessage}</Typography.Text>
+        </Form.Item>
+
         <Form.Item
           {...tailLayout}
           style={{ marginBottom: 0 }}
@@ -47,8 +63,9 @@ const AuthForm: FC = () => {
           <Button
             type="primary"
             htmlType="submit"
+            disabled={buttonDisabled}
           >
-            Submit
+            Войти
           </Button>
         </Form.Item>
       </Form>

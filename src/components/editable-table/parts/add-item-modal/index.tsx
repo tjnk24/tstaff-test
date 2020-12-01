@@ -53,10 +53,10 @@ const AddItemModal: FC<AddItemModalProps> = ({
         {...layout}
         labelAlign="left"
         name="basic"
+        onFinish={addHandler}
         initialValues={{
           remember: true,
         }}
-        onFinish={addHandler}
       >
         { mappedInputs }
 

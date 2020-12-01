@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { default as AntdForm } from 'antd/lib/form';
+import AntdForm from 'antd/lib/form';
 
 const Form = styled(AntdForm)`
   div {

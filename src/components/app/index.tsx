@@ -5,8 +5,8 @@ import ContactsPage from '@pages/contacts';
 
 const App: FC = () => (
   <Switch>
-    <Route exact path="/" component={AuthPage} />
-    <Route exact path="/contacts" component={ContactsPage} />
+    <Route exact path="/" component={ContactsPage} />
+    <Route path="/login" component={AuthPage} />
     <Redirect to="/" />
   </Switch>
 );
