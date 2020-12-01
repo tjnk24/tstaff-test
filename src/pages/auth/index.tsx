@@ -3,7 +3,7 @@ import Title from 'antd/lib/typography/Title';
 import AuthForm from '@components/auth-form';
 import Wrapper from './style';
 
-const Auth: FC = () => {
+const AuthPage: FC = () => {
   return (
     <Wrapper>
       <Title>Takeoff-staff test</Title>
@@ -12,4 +12,4 @@ const Auth: FC = () => {
   );
 };
 
-export default Auth;
+export default AuthPage;

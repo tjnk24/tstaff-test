@@ -28,8 +28,11 @@ module.exports = {
   },
   watch: true,
   devServer: {
+    host: 'localhost',
     port: 8080,
     contentBase: path.resolve(__dirname, 'src'),
+    hot: true,
+    historyApiFallback: true,
   },
   mode: development ? 'development' : 'production',
   devtool: 'source-map',

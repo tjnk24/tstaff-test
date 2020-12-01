@@ -2,22 +2,7 @@ import React, { FC } from 'react';
 import { Button, Card } from 'antd';
 import Input from 'antd/lib/input';
 import Form from './style';
-
-const layout = {
-  labelCol: {
-    span: 8,
-  },
-  wrapperCol: {
-    span: 16,
-  },
-};
-
-const tailLayout = {
-  wrapperCol: {
-    offset: 8,
-    span: 16,
-  },
-};
+import { layout , tailLayout } from './layout-props';
 
 const AuthForm: FC = () => {
   return (
