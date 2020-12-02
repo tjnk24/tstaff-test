@@ -1,8 +1,12 @@
 import styled from 'styled-components';
 
-const TableWrapper = styled.div`
+export const TableWrapper = styled.div`
+  .ant-table-wrapper {
+    min-width: 570px;
+  }
+
   .ant-table-thead tr th {
-    padding-left: 30px;
+    padding-left: 26px;
   }
 
   .editable-cell {
@@ -25,4 +29,10 @@ const TableWrapper = styled.div`
   }
 `;
 
-export default TableWrapper;
+export const ButtonWrapper = styled.div`
+  width: 100px;
+
+  button {
+    float: right;
+  }
+`;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'antd';
+import DeleteButton from './parts/delete-button';
 import { ColumnsComposerType } from './types';
 
 const composeColumns: ColumnsComposerType = ({
@@ -28,15 +28,11 @@ const composeColumns: ColumnsComposerType = ({
     },
     {
       dataIndex: "operation",
-      width: '10%',
-      render: (text: string, record: { key: string }) =>
+      render: (_text: string, record: { id: string }) =>
         (dataSource.length >= 1) ? (
-          <Button
-            onClick={() => handleDelete(record.key)}
-            style={{ float: "right" }}
-          >
-            Delete
-          </Button>
+          <DeleteButton
+            handler={() => handleDelete(record.id)}
+          />
         ) : null
     }
   ];
@@ -45,7 +41,6 @@ const composeColumns: ColumnsComposerType = ({
     if (!col.editable) {
       return col;
     }
-
     return {
       ...col,
       onCell: (record: {}) => ({

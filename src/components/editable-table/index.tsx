@@ -1,68 +1,73 @@
-import React, { useState } from 'react';
-import { Table, Button } from 'antd';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Table, Button, Spin } from 'antd';
 import EditableCell from './parts/cell';
 import EditableRow from './parts/row';
 import { IContact } from './types';
-import TableWrapper from './style';
+import { TableWrapper } from './style';
 import AddItemModal from '@components/editable-table/parts/add-item-modal';
 import composeColumns from './columns-composer';
 
+const url = 'http://localhost:3000/contacts';
+
 const EditableTable = () => {
   const [addModalVisible, setAddModalVisible] = useState(false);
+  const [dataSource, setDataSource] = useState<IContact[]>(null);
 
-  const [dataSource, setDataSource] = useState<IContact[]>([
-    {
-      key: "0",
-      name: "Виталий Геннадьевич Иванов",
-      email: "sifegim192@ofdow.com",
-      phone: "+79252223355"
-    },
-    {
-      key: "1",
-      name: "Эдуард Викторович Григорьев",
-      email: "sdfsdfsdf@ddfw.com",
-      phone: "+79256664455"
-    },
-    {
-      key: "2",
-      name: "Хабиб Хабибович Нурмагомедов",
-      email: "sdfsdfsss@sdfsdf.org",
-      phone: "+79259994411"
-    },
-    {
-      key: "3",
-      name: "Евгений Евгеньевич Плющенко",
-      email: "sdfsdfddd@dddddd.org",
-      phone: "+79252220033"
-    }
-  ]);
+  useEffect(() => {
+    axios.get(url)
+      .then((response) => {
+        setDataSource(response.data)
+      })
+      .catch((error) => {
+        throw new Error(error.message);
+      });
+  }, []);
 
   const [count, setCount] = useState<string | number>(4);
 
-  const saveState = (data: IContact) => {
+  const handleSaveState = (data: IContact) => {
     const newData = {
-      key: count,
+      id: count,
       ...data
     };
+
     setDataSource([...dataSource, newData]);
     setCount(count as number + 1);
+
+    axios.post(url, newData).catch((error) => {
+      throw new Error(error.message);
+    });;
   };
 
-  const handleSave = (row: { key: string }) => {
+  const handleSaveCell = (row: { id: string }) => {
     const newData = [...dataSource];
-    const index = newData.findIndex((item) => row.key === item.key);
+    const index = newData.findIndex((item) => row.id === item.id);
     const item = newData[index];
+
     newData.splice(index, 1, { ...item, ...row });
     setDataSource(newData);
+
+    axios
+      .put(`${url}/${index}`, row)
+      .catch((error) => {
+        throw new Error(error.message);
+      });;
   };
 
-  const handleDelete = (key: string) => {
-    setDataSource(dataSource.filter((item) => item.key !== key));
+  const handleDelete = (id: string) => {
+    setDataSource(dataSource.filter((item) =>
+      item.id !== id
+    ));
+
+    axios.delete(`${url}/${id}`).catch((error) => {
+      throw new Error(error.message);
+    });;
   };
 
   const composerParams = {
     dataSource,
-    handleSave,
+    handleSave: handleSaveCell,
     handleDelete
   };
 
@@ -77,27 +82,34 @@ const EditableTable = () => {
 
   return (
     <>
-      <AddItemModal
-        inputsData={columns}
-        visible={addModalVisible}
-        saveState={saveState}
-        onVisibleHandler={setAddModalVisible}
-      />
-      <TableWrapper>
-        <Button
-          onClick={() => setAddModalVisible(true)}
-          type="primary"
-        >
-          Добавить контакт
-        </Button>
-        <Table<IContact>
-          components={components}
-          rowClassName={() => "editable-row"}
-          pagination={false}
-          dataSource={dataSource}
-          columns={columns}
-        />
-      </TableWrapper>
+      {
+        dataSource ? (
+          <>
+            <AddItemModal
+              inputsData={columns}
+              visible={addModalVisible}
+              saveState={handleSaveState}
+              onVisibleHandler={setAddModalVisible}
+            />
+            <TableWrapper>
+              <Button
+                onClick={() => setAddModalVisible(true)}
+                type="primary"
+              >
+                Добавить контакт
+              </Button>
+              <Table<IContact>
+                components={components}
+                rowKey="id"
+                rowClassName={() => "editable-row"}
+                pagination={false}
+                dataSource={dataSource}
+                columns={columns}
+              />
+            </TableWrapper>
+          </>
+        ) : <Spin />
+      }
     </>
   );
 };

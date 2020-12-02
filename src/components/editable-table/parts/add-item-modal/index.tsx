@@ -3,8 +3,10 @@ import Modal from 'antd/lib/modal/Modal';
 import Form from 'antd/lib/form';
 import Input from 'antd/lib/input';
 import Button from 'antd/lib/button';
-import { AddItemModalProps, IContact } from '@components/editable-table/types';
 import { layout, tailLayout } from './layout-props';
+
+import { IContact } from '@components/editable-table/types';
+import { AddItemModalProps } from '../types';
 
 const AddItemModal: FC<AddItemModalProps> = ({
   inputsData,

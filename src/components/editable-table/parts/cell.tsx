@@ -6,10 +6,9 @@ import React, {
   useState,
 } from 'react';
 import { Form, Input } from 'antd';
-import { EditableCellProps } from '../types';
-import { FormInstance } from 'antd/lib/form';
+import { EditableCellProps, EditableContextType } from './types';
 
-export const EditableContext = React.createContext({} as FormInstance<string>);
+export const EditableContext = React.createContext<EditableContextType>({} as EditableContextType);
 
 const EditableCell: FC<EditableCellProps> = ({
   title,
@@ -22,7 +21,8 @@ const EditableCell: FC<EditableCellProps> = ({
 }) => {
   const [editing, setEditing] = useState(false);
   const inputRef = useRef<Input>();
-  const form = useContext(EditableContext);
+  const { form } = useContext(EditableContext);
+
   useEffect(() => {
     if (editing) {
       inputRef.current.focus();
@@ -68,9 +68,6 @@ const EditableCell: FC<EditableCellProps> = ({
     ) : (
       <div
         className="editable-cell-value-wrap"
-        style={{
-          paddingRight: 24
-        }}
         onClick={toggleEdit}
       >
         {children}
