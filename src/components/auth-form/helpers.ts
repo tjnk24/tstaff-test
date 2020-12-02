@@ -6,12 +6,11 @@ const url = 'http://localhost:3000/login';
 const message400 = 'Извините, неправильный логин или пароль.';
 const message404 = 'Сервер авторизации недоступен.';
 
-const authenticateUser: AuthenticateUserType = (values, setError) => {
-  axios.post(url, values)
+const authenticateUser: AuthenticateUserType = (values, setError) => axios.post(url, values)
     .then((response) => {
       const { accessToken } = response.data;
 
-      localStorage.setItem('token', accessToken);
+      localStorage.setItem('currentUser', accessToken);
     }).catch((error) => {
       switch (error.response.status) {
         case 400: {
@@ -28,6 +27,5 @@ const authenticateUser: AuthenticateUserType = (values, setError) => {
       }
       throw new Error(error.message);
     });
-};
 
 export default authenticateUser;

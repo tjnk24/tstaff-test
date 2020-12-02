@@ -1,18 +1,27 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Button, Card, Typography, Input } from 'antd';
 import authenticateUser from './helpers';
 import { layout , tailLayout } from './layout-props';
 import Form from './style';
-import { AuthValuesType } from './types';
+import { AuthFormProps, AuthValuesType, LocationStateType } from './types';
 
-const AuthForm: FC = () => {
+const AuthForm: FC<AuthFormProps> = ({ history, location }) => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const loginHandler = (values: AuthValuesType) => {
     setButtonDisabled(true);
-    authenticateUser(values, setErrorMessage);
-    setButtonDisabled(false);
+
+    authenticateUser(values, setErrorMessage)
+      .then(() => {
+        setButtonDisabled(false);
+
+        const { from } = location.state as LocationStateType || { from: { pathname: "/" } };
+
+        if (localStorage.getItem('currentUser')) {
+          history.push(from);
+        };
+      })
   };
 
   return (

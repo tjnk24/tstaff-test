@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
   width: 300px;
   position: absolute;
   top: 50%;
@@ -10,4 +10,12 @@ const Wrapper = styled.div`
   transform: translateX(-50%) translateY(-50%);
 `;
 
-export default Wrapper;
+export const CredentialsBlock = styled.p`
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+
+  span {
+    font-size: 13px;
+  }
+`;

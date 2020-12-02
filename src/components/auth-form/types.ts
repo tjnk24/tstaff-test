@@ -1,5 +1,13 @@
 import Form from 'antd/lib/form/Form';
 import { Dispatch, SetStateAction } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
+
+export type AuthFormProps = {
+  history: RouteComponentProps['history'];
+  location: RouteComponentProps['location'];
+}
+
+export type LocationStateType = { from: { pathname: string } }
 
 export type AuthValuesType = {
   email: string;
@@ -9,4 +17,4 @@ export type AuthValuesType = {
 export type AuthenticateUserType = (
   values: AuthValuesType,
   setError: Dispatch<SetStateAction<string>>
-) => void;
+) => Promise<void>;
