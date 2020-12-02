@@ -1,4 +1,30 @@
 {
+  "contacts": [
+    {
+      "id": "0",
+      "name": "Виталий Геннадьевич Иванов",
+      "email": "sifegim192@ofdow.com",
+      "phone": "+79252223355"
+    },
+    {
+      "id": "1",
+      "name": "Эдуард Викторович Григорьев",
+      "email": "sdfsdfsdf@ddfw.com",
+      "phone": "+79256664455"
+    },
+    {
+      "id": "2",
+      "name": "Хабиб Хабибович Нурмагомедов",
+      "email": "sdfsdfsss@sdfsdf.org",
+      "phone": "+79259994411"
+    },
+    {
+      "id": "3",
+      "name": "Евгений Евгеньевич Плющенко",
+      "email": "sdfsdfddd@dddddd.org",
+      "phone": "+79252220033"
+    }
+  ],
   "users": [
     {
       "email": "olivier@mail.com",

@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { Table, Button } from 'antd';
 import EditableCell from './parts/cell';
 import EditableRow from './parts/row';
-import { ColumnType, IContact } from './types';
+import { IContact } from './types';
 import TableWrapper from './style';
 import AddItemModal from '@components/editable-table/parts/add-item-modal';
+import composeColumns from './columns-composer';
 
 const EditableTable = () => {
   const [addModalVisible, setAddModalVisible] = useState(false);
@@ -38,44 +39,6 @@ const EditableTable = () => {
 
   const [count, setCount] = useState<string | number>(4);
 
-  const columnsData: ColumnType[] = [
-    {
-      title: "ФИО",
-      dataIndex: "name",
-      width: "30%",
-      editable: true
-    },
-    {
-      title: "E-mail",
-      dataIndex: "email",
-      width: "30%",
-      editable: true
-    },
-    {
-      title: "Телефон",
-      dataIndex: "phone",
-      width: "30%",
-      editable: true
-    },
-    {
-      dataIndex: "operation",
-      width: '10%',
-      render: (text: string, record: { key: string }) =>
-        dataSource.length >= 1 ? (
-          <Button
-            onClick={() => handleDelete(record.key)}
-            style={{ float: "right" }}
-          >
-            Delete
-          </Button>
-        ) : null
-    }
-  ];
-
-  const handleDelete = (key: string) => {
-    setDataSource(dataSource.filter((item) => item.key !== key));
-  };
-
   const saveState = (data: IContact) => {
     const newData = {
       key: count,
@@ -93,22 +56,17 @@ const EditableTable = () => {
     setDataSource(newData);
   };
 
-  const columns = columnsData.map((col) => {
-    if (!col.editable) {
-      return col;
-    }
+  const handleDelete = (key: string) => {
+    setDataSource(dataSource.filter((item) => item.key !== key));
+  };
 
-    return {
-      ...col,
-      onCell: (record: {}) => ({
-        record,
-        handleSave,
-        editable: col.editable,
-        dataIndex: col.dataIndex,
-        title: col.title,
-      })
-    };
-  });
+  const composerParams = {
+    dataSource,
+    handleSave,
+    handleDelete
+  };
+
+  const columns = composeColumns(composerParams);
 
   const components = {
     body: {

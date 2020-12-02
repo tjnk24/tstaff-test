@@ -11,12 +11,20 @@ export type ColumnType = {
   title?: string;
   dataIndex: string;
   width?: string;
-  editable?: true;
+  editable?: boolean;
   render?: (
     text: string,
     record: { key: string }
     ) => JSX.Element | null
 }
+
+type ColumnsComposerParams = {
+  dataSource: IContact[],
+  handleSave: (row: { key: IContact['key'] }) => void,
+  handleDelete: (key: string) => void
+}
+
+export type ColumnsComposerType = (params: ColumnsComposerParams) => ColumnType[];
 
 export type EditableRowProps = {
   index: string | number;
