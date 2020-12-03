@@ -1,30 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, Button, Spin } from 'antd';
 import EditableCell from './parts/cell';
 import EditableRow from './parts/row';
-import { IContact } from './types';
-import { TableWrapper } from './style';
-import AddItemModal from '@components/editable-table/parts/add-item-modal';
+import AddItemModal from './parts/add-item-modal';
 import composeColumns from './columns-composer';
+import { getLocalContacts, setLocalContacts, url } from './helpers';
+import { IContact } from './types';
 
-const url = 'http://localhost:3000/contacts';
+import { TableWrapper } from './style';
 
-const EditableTable = () => {
+const EditableTable: FC = () => {
   const [addModalVisible, setAddModalVisible] = useState(false);
-  const [dataSource, setDataSource] = useState<IContact[]>(null);
+  const [dataSource, setDataSource] = useState<IContact[]>(getLocalContacts);
+  const [count, setCount] = useState<string | number>(4);
 
   useEffect(() => {
-    axios.get(url)
-      .then((response) => {
-        setDataSource(response.data)
-      })
-      .catch((error) => {
-        throw new Error(error.message);
-      });
+    if (!getLocalContacts) {
+      axios.get(url)
+        .then((response) => {
+          setDataSource(response.data);
+          setLocalContacts(response.data)
+        })
+        .catch((error) => {
+          throw new Error(error.message);
+        });
+    }
   }, []);
-
-  const [count, setCount] = useState<string | number>(4);
 
   const handleSaveState = (data: IContact) => {
     const newData = {
@@ -32,12 +34,11 @@ const EditableTable = () => {
       ...data
     };
 
-    setDataSource([...dataSource, newData]);
-    setCount(count as number + 1);
+    const newDataSource = [...dataSource, newData]
 
-    axios.post(url, newData).catch((error) => {
-      throw new Error(error.message);
-    });;
+    setDataSource(newDataSource);
+    setCount(count as number + 1);
+    setLocalContacts(newDataSource)
   };
 
   const handleSaveCell = (row: { id: string }) => {
@@ -46,23 +47,21 @@ const EditableTable = () => {
     const item = newData[index];
 
     newData.splice(index, 1, { ...item, ...row });
-    setDataSource(newData);
 
-    axios
-      .put(`${url}/${index}`, row)
-      .catch((error) => {
-        throw new Error(error.message);
-      });;
+    setDataSource(newData);
+    setLocalContacts(newData);
   };
 
   const handleDelete = (id: string) => {
-    setDataSource(dataSource.filter((item) =>
-      item.id !== id
-    ));
+    const newData = dataSource.filter((item) =>
+        item.id !== id
+      ).map((item, index) => ({
+        ...item,
+        id: index.toString(),
+      }));
 
-    axios.delete(`${url}/${id}`).catch((error) => {
-      throw new Error(error.message);
-    });;
+    setDataSource(newData);
+    setLocalContacts(newData);
   };
 
   const composerParams = {
@@ -91,6 +90,7 @@ const EditableTable = () => {
               saveState={handleSaveState}
               onVisibleHandler={setAddModalVisible}
             />
+
             <TableWrapper>
               <Button
                 onClick={() => setAddModalVisible(true)}

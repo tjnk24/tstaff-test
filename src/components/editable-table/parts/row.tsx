@@ -1,15 +1,11 @@
 import Form from 'antd/lib/form';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { EditableRowProps } from './types';
 import { EditableContext } from './cell';
 
 const EditableRow: FC<EditableRowProps> = ({ index, ...props }) => {
   const [hovered, setHovered] = useState(true);
   const [form] = Form.useForm();
-
-  useEffect(() => {
-    console.log(hovered);
-  }, [hovered]);
 
   return (
     <Form

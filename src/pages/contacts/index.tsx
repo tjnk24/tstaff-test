@@ -6,7 +6,7 @@ import Wrapper from './style';
 const ContactsPage: FC = () => {
   return (
     <Wrapper>
-      <Title style={{ 'marginBottom': '40px' }}>Контакты</Title>
+      <Title level={2}>Контакты</Title>
       <EditableTable />
     </Wrapper>
   );

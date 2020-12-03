@@ -1,9 +1,7 @@
 import styled from 'styled-components';
 
 export const TableWrapper = styled.div`
-  .ant-table-wrapper {
-    min-width: 570px;
-  }
+  min-width: 570px;
 
   .ant-table-thead tr th {
     padding-left: 26px;
@@ -29,7 +27,7 @@ export const TableWrapper = styled.div`
   }
 `;
 
-export const ButtonWrapper = styled.div`
+export const DeleteButtonWrapper = styled.div`
   width: 100px;
 
   button {
